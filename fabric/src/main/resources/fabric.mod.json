@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "catchlevelcap",
+  "version": "${version}",
+  "name": "Cobblemon Catch Level Cap",
+  "description": "A simple mod to prevent catching Pokemon too far above your party's level.",
+  "authors": [
+    "Sylvonir"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+  "license": "Insert License Here",
+  "icon": "assets/catchlevelcap/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.sylvonir.catchlevelcap.fabric.CatchLevelCapFabric"
+    ]
+  },
+  "mixins": [
+    "catchlevelcap.mixins.json",
+    "catchlevelcap-common.mixins.json"
+  ],
+  "depends": {
+    "fabric": "*",
+    "minecraft": ">=1.20.1",
+    "cobblemon": ">=1.5"
+  }
+}
