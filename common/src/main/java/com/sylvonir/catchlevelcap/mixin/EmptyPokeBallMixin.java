@@ -4,18 +4,17 @@ import com.cobblemon.mod.common.api.battles.model.PokemonBattle;
 import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
 import com.cobblemon.mod.common.battles.ActiveBattlePokemon;
 import com.cobblemon.mod.common.battles.BattleCaptureAction;
-import com.cobblemon.mod.common.client.CobblemonClient;
-import com.cobblemon.mod.common.client.render.ModelLayer;
-import com.cobblemon.mod.common.client.render.models.blockbench.repository.PokemonModelRepository;
+import com.cobblemon.mod.common.entity.pokeball.EmptyPokeBallEntity;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.cobblemon.mod.common.net.messages.client.battle.BattleCaptureEndPacket;
 import com.cobblemon.mod.common.pokemon.Pokemon;
+import com.cobblemon.mod.common.util.PlayerExtensionsKt;
+import com.cobblemon.mod.common.util.WorldExtensionsKt;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.GameRules;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,11 +23,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import com.cobblemon.mod.common.entity.pokeball.EmptyPokeBallEntity;
-import com.cobblemon.mod.common.util.PlayerExtensionsKt;
-import com.cobblemon.mod.common.util.WorldExtensionsKt;
-
-import java.util.Set;
 
 import static com.sylvonir.catchlevelcap.CatchLevelCap.*;
 
@@ -43,10 +37,7 @@ public abstract class EmptyPokeBallMixin {
     @Inject(method = "onEntityHit",
             at = @At(
                     value = "INVOKE",
-                    //target = "Lcom/cobblemon/mod/common/entity/EntityProperty;set(Ljava/lang/Object;)V",
-                    //target = "Lnet/minecraft/entity/data/DataTracker;set(Lnet/minecraft/entity/data/TrackedData<T>;T;)V",
                     target = "Lcom/cobblemon/mod/common/entity/pokeball/EmptyPokeBallEntity;attemptCatch(Lcom/cobblemon/mod/common/entity/pokemon/PokemonEntity;)V",
-                    //target = "Lcom/cobblemon/mod/common/entity/pokeball/EmptyPokeBallEntity;getOwner()Lnet/minecraft/entity/Entity;",
                     shift = At.Shift.BEFORE,
                     ordinal = 0
             ),
@@ -55,27 +46,6 @@ public abstract class EmptyPokeBallMixin {
         EmptyPokeBallEntity self = (EmptyPokeBallEntity) (Object) this;
 
         if (self.getOwner() instanceof ServerPlayerEntity player) {
-
-            PokemonModelRepository instance = PokemonModelRepository.INSTANCE;
-            Set<String> aspects = capturingPokemon.getPokemon().getAspects();
-            Identifier identifier = capturingPokemon.getPokemon().getSpecies().resourceIdentifier;
-            player.sendMessage(Text.literal(
-                instance.getTextureNoSubstitute(identifier, aspects, 0F).toString()));
-            player.sendMessage(Text.literal(
-                    instance.getPoser(identifier, aspects).toString()));
-
-            player.sendMessage(Text.literal(
-                instance.getVariations().get(identifier).getResolvedTexture(aspects, 0F).toString()));
-
-            for(String s : aspects) {
-                player.sendMessage(Text.literal(s));
-            }
-
-            Iterable<ModelLayer> layers = instance.getLayers(identifier, aspects);
-
-            for(ModelLayer layer : layers) {
-                player.sendMessage(Text.literal(layer.getTexture().invoke(0F).toString()));
-            }
 
             if (!player.isCreative() && !self.getPokeBall().getCatchRateModifier().isGuaranteed() && !capturingPokemon.getPokemon().getShiny()) {
 
