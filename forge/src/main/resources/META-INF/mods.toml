@@ -1,17 +1,18 @@
 modLoader = "javafml"
 loaderVersion = "[47,)"
-#issueTrackerURL = ""
+issueTrackerURL = "https://github.com/Sylvonir/catchlevelcap/issues"
 license = "MPL-2.0"
 
 [[mods]]
 modId = "catchlevelcap"
 version = "${version}"
 displayName = "Cobblemon Catch Level Cap"
+displayURL = "https://modrinth.com/mod/catchlevelcap"
 authors = "Sylvonir"
 description = '''
 A simple mod to prevent catching Pokemon too far above your party's level.
 '''
-#logoFile = ""
+logoFile = "icon.png"
 
 [[dependencies.catchlevelcap]]
 modId = "forge"
