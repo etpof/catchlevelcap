@@ -113,7 +113,8 @@ public abstract class EmptyPokeBallMixin {
     private int catchlevelcap$getHighestPartyLevel(ServerPlayerEntity player) {
         PlayerPartyStore party = PlayerExtensionsKt.party(player);
 
-        int max = 10;
+        // fixing this line, previously was max = 10, but this assumed the player already chose a starter at level 10
+        int max = 1;
         for(Pokemon pokemon : party) {
             int level = pokemon.getLevel();
             if(level > max) {
